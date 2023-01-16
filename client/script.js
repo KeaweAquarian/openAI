@@ -1,15 +1,9 @@
-// import bot from './assets/bot.png'
-// import user from './assets/user.png'
-window.alert("sometext");
+
 const form = document.querySelector('form')
 const chatContainer = document.querySelector('#chat_container')
 
 let loadInterval
-window.alert("sometext");
 
-function click(){
-    window.alert("sometext");
-}
 
 function loader(element) {
     element.textContent = ''
