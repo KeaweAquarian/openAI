@@ -1,23 +1,24 @@
-
+//Javascript file for MyChatGPT project.
 const form = document.querySelector('form')
-const chatContainer = document.querySelector('#chat_container')
+const chatContainer = document.querySelector('#chatBox')
 
 let loadInterval
 
-
+//function to create thinking dots.
 function loader(element) {
     element.textContent = ''
 
     loadInterval = setInterval(() => {
-        // Update the text content of the loading indicator
+        
         element.textContent += '.';
 
-        // If the loading indicator has reached three dots, reset it
+        // end dot creation at 3.
         if (element.textContent === '....') {
             element.textContent = '';
         }
     }, 300);
 }
+
 
 function typeText(element, text) {
     let index = 0
@@ -32,9 +33,7 @@ function typeText(element, text) {
     }, 20)
 }
 
-// generate unique ID for each message div of bot
-// necessary for typing text effect for that specific reply
-// without unique ID, typing text will work on every element
+// Create ID for bot responces.
 function generateUniqueId() {
     const timestamp = Date.now();
     const randomNumber = Math.random();
@@ -43,6 +42,7 @@ function generateUniqueId() {
     return `id-${timestamp}-${hexadecimalString}`;
 }
 
+//Creates chatStripe contents
 function chatStripe(isAi, value, uniqueId) {
     return (
         `
@@ -50,7 +50,7 @@ function chatStripe(isAi, value, uniqueId) {
             <div class="chat">
                 <div class="profile">
                     <img 
-                      src=${isAi ?  './assets/bot.svg' : './assets/user.svg'} 
+                      src=${isAi ?  './images/bot.png' : './images/user.png'} 
                       alt="${isAi ? 'bot' : 'user'}" 
                     />
                 </div>
@@ -66,23 +66,23 @@ const handleSubmit = async (e) => {
 
     const data = new FormData(form)
 
-    // user's chatstripe
+    // user
     chatContainer.innerHTML += chatStripe(false, data.get('prompt'))
 
-    // to clear the textarea input 
+    // clear text area.
     form.reset()
 
-    // bot's chatstripe
+    // chat GPT
     const uniqueId = generateUniqueId()
     chatContainer.innerHTML += chatStripe(true, " ", uniqueId)
 
     // to focus scroll to the bottom 
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
-    // specific message div 
+    // create message div variable 
     const messageDiv = document.getElementById(uniqueId)
 
-    // messageDiv.innerHTML = "..."
+    // load message div
     loader(messageDiv)
 
     const response = await fetch('https://myopenai-irvo.onrender.com', {
@@ -100,7 +100,7 @@ const handleSubmit = async (e) => {
 
     if (response.ok) {
         const data = await response.json();
-        const parsedData = data.bot.trim() // trims any trailing spaces/'\n' 
+        const parsedData = data.bot.trim() 
 
         typeText(messageDiv, parsedData)
     } else {
