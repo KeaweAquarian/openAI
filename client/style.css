@@ -14,8 +14,9 @@ body {
 }
 
 #main {
+  padding-top: 20px;
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
   background: #343541;
 
   display: flex;
